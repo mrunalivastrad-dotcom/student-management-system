@@ -1,0 +1,51 @@
+def solve_maze(maze, start, end):
+    rows = len(maze)
+    cols = len(maze[0])
+
+    stack = [(start, [start])]  # (current_position, path)
+    visited = set()
+
+    while stack:
+        (x, y), path = stack.pop()
+
+        # If reached destination
+        if (x, y) == end:
+            return path
+
+        if (x, y) in visited:
+            continue
+
+        visited.add((x, y))
+
+        # Possible moves: up, down, left, right
+        moves = [(-1, 0), (1, 0), (0, -1), (0, 1)]
+
+        for dx, dy in moves:
+            nx, ny = x + dx, y + dy
+
+            if 0 <= nx < rows and 0 <= ny < cols:
+                if maze[nx][ny] == 0 and (nx, ny) not in visited:
+                    stack.append(((nx, ny), path + [(nx, ny)]))
+
+    return None
+
+
+# Example Maze
+maze = [
+    [0, 1, 0, 0, 0],
+    [0, 1, 0, 1, 0],
+    [0, 0, 0, 1, 0],
+    [1, 1, 0, 0, 0]
+]
+
+start = (0, 0)
+end = (3, 4)
+
+path = solve_maze(maze, start, end)
+
+if path:
+    print("Path found:")
+    for step in path:
+        print(step)
+else:
+    print("No path found")
